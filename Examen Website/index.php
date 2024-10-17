@@ -133,7 +133,6 @@ if ($conn->connect_error) {
         <video autoplay muted loop class="w-100" style="object-fit: cover; height: 70vh;">
             <source src="video/hero-video.mp4" type="video/mp4">
             <!-- Fallback afbeelding -->
-            <img src="img/hero-fallback.jpg" alt="Fallback Afbeelding">
         </video>
         <div class="hero-text text-center text-white" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;">
             <h1>Welkom bij PremiumWagens</h1>

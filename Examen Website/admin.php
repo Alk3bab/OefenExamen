@@ -11,60 +11,30 @@ if (!isset($_SESSION['user']) || $_SESSION['rol'] != 'admin') {
     exit();
 }
 
-// Verwerk het formulier om een auto toe te voegen
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Haal de waarden uit het formulier op en valideer ze
-    $merk = mysqli_real_escape_string($conn, $_POST['merk'] ?? '');
-    $model = mysqli_real_escape_string($conn, $_POST['model'] ?? '');
-    $bouwjaar = (int)($_POST['bouwjaar'] ?? 0);
-    $prijs = (float)($_POST['prijs'] ?? 0);
-    $beschrijving = mysqli_real_escape_string($conn, $_POST['beschrijving'] ?? '');
-    $hoofdfoto_url = mysqli_real_escape_string($conn, $_POST['hoofdfoto_url'] ?? '');
-
-    // Haal de overige velden op
-    $carrosserietype = mysqli_real_escape_string($conn, $_POST['carrosserietype'] ?? '');
-    $categorie = mysqli_real_escape_string($conn, $_POST['categorie'] ?? '');
-    $aandrijving = mysqli_real_escape_string($conn, $_POST['aandrijving'] ?? '');
-    $stoelen = (int)($_POST['stoelen'] ?? 0);
-    $deuren = (int)($_POST['deuren'] ?? 0);
-    $advertentienr = mysqli_real_escape_string($conn, $_POST['advertentienr'] ?? '');
-    $kilometerstand = mysqli_real_escape_string($conn, $_POST['kilometerstand'] ?? '');
-    $apk = mysqli_real_escape_string($conn, $_POST['apk'] ?? '');
-    $vermogen_kw = mysqli_real_escape_string($conn, $_POST['vermogen_kw'] ?? '');
-    $transmissie = mysqli_real_escape_string($conn, $_POST['transmissie'] ?? '');
-    $cilinderinhoud = mysqli_real_escape_string($conn, $_POST['cilinderinhoud'] ?? '');
-    $versnellingen = mysqli_real_escape_string($conn, $_POST['versnellingen'] ?? '');
-    $cilinders = mysqli_real_escape_string($conn, $_POST['cilinders'] ?? '');
-    $leeggewicht = mysqli_real_escape_string($conn, $_POST['leeggewicht'] ?? '');
-
-    $afbeelding_urls = $_POST['afbeelding_urls'] ?? [];
-
-    // Voeg de auto toe aan de 'cars' tabel
-    $query = "INSERT INTO cars (merk, model, bouwjaar, prijs, beschrijving, afbeelding_url, carrosserietype, categorie, aandrijving, stoelen, deuren, advertentienr, kilometerstand, apk, vermogen_kw, transmissie, cilinderinhoud, versnellingen, cilinders, leeggewicht)
-              VALUES ('$merk', '$model', '$bouwjaar', '$prijs', '$beschrijving', '$hoofdfoto_url', '$carrosserietype', '$categorie', '$aandrijving', '$stoelen', '$deuren', '$advertentienr', '$kilometerstand', '$apk', '$vermogen_kw', '$transmissie', '$cilinderinhoud', '$versnellingen', '$cilinders', '$leeggewicht')";
-    
-    if (mysqli_query($conn, $query)) {
-        $car_id = mysqli_insert_id($conn);
-
-        // Voeg de extra afbeeldingen toe aan de 'car_images' tabel
-        foreach ($afbeelding_urls as $url) {
-            if (!empty($url)) {
-                $query_image = "INSERT INTO car_images (car_id, image_url) VALUES ('$car_id', '$url')";
-                mysqli_query($conn, $query_image);
-            }
-        }
-        echo "<p style='color:green;'>Auto succesvol toegevoegd!</p>";
-    } else {
-        echo "<p style='color:red;'>Er is een fout opgetreden: " . mysqli_error($conn) . "</p>";
-    }
-}
-
-// Haal klantgegevens en auto's op uit de database
+// Haal klantgegevens, auto's en berichten op uit de database
 $klanten_query = "SELECT * FROM users WHERE rol='klant'";
 $klanten_result = mysqli_query($conn, $klanten_query);
 
 $autos_query = "SELECT * FROM cars ORDER BY created_at DESC";
 $autos_result = mysqli_query($conn, $autos_query);
+
+$berichten_query = "SELECT * FROM berichten ORDER BY datum DESC";
+$berichten_result = mysqli_query($conn, $berichten_query);
+
+// Functie om e-mails te versturen
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_email'])) {
+    $to = mysqli_real_escape_string($conn, $_POST['to']);
+    $subject = mysqli_real_escape_string($conn, $_POST['subject']);
+    $message = mysqli_real_escape_string($conn, $_POST['message']);
+    
+    $headers = "From: info@premiumwagens.nl";
+
+    if (mail($to, $subject, $message, $headers)) {
+        $email_success = true;
+    } else {
+        $email_success = false;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -72,29 +42,49 @@ $autos_result = mysqli_query($conn, $autos_query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - PremiumWagens</title>
-    <link rel="stylesheet" href="css/admin.css">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-    <div class="admin-container">
-        <!-- Zijbalk met menu -->
-        <nav class="sidebar">
-            <h2>Admin Dashboard</h2>
-            <ul>
-                <li><a href="#" id="klanten-link">Klantgegevens</a></li>
-                <li><a href="#" id="autos-link">Auto's Toevoegen</a></li>
-                <li><a href="#" id="overzicht-link">Auto Overzicht</a></li>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="bg-dark text-light p-3" style="width: 250px; min-height: 100vh;">
+            <h2 class="text-center">Admin Dashboard</h2>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-3">
+                    <a href="#" id="klanten-link" class="nav-link text-light bg-secondary rounded">Klantgegevens</a>
+                </li>
+                <li class="nav-item mb-3">
+                    <a href="#" id="autos-link" class="nav-link text-light bg-secondary rounded">Auto's Toevoegen</a>
+                </li>
+                <li class="nav-item mb-3">
+                    <a href="#" id="overzicht-link" class="nav-link text-light bg-secondary rounded">Auto Overzicht</a>
+                </li>
+                <li class="nav-item mb-3">
+                    <a href="#" id="berichten-link" class="nav-link text-light bg-secondary rounded">Berichten</a>
+                </li>
+                <li class="nav-item mb-3">
+                    <a href="#" id="email-link" class="nav-link text-light bg-secondary rounded">Mail Sturen</a>
+                </li>
             </ul>
-            <div class="sidebar-footer">
-                <a href="login.php" class="btn-back">Terug</a>
+            <div class="mt-auto">
+                <a href="login.php" class="btn btn-primary w-100">Terug</a>
             </div>
         </nav>
 
-        <!-- Hoofdinhoud -->
-        <div class="main-content" id="main-content">
+        <!-- Main content -->
+        <div class="p-4 w-100 bg-light" id="main-content">
             <h2>Welkom, Admin!</h2>
             <p>Kies een optie uit het menu om te beginnen.</p>
+            <?php if (isset($email_success)) {
+                if ($email_success) {
+                    echo "<div class='alert alert-success'>E-mail succesvol verstuurd!</div>";
+                } else {
+                    echo "<div class='alert alert-danger'>Er is een fout opgetreden bij het versturen van de e-mail.</div>";
+                }
+            } ?>
         </div>
     </div>
 
@@ -103,7 +93,7 @@ $autos_result = mysqli_query($conn, $autos_query);
         document.getElementById('klanten-link').addEventListener('click', function() {
             document.getElementById('main-content').innerHTML = `
                 <h2>Klantgegevens</h2>
-                <table>
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -126,115 +116,11 @@ $autos_result = mysqli_query($conn, $autos_query);
             `;
         });
 
-        // Auto's toevoegen weergeven
-        document.getElementById('autos-link').addEventListener('click', function() {
-            document.getElementById('main-content').innerHTML = `
-                <h2>Auto Toevoegen</h2>
-                <form method="POST" action="">
-                    <div class="form-group">
-                        <label for="merk">Merk</label>
-                        <input type="text" name="merk" required class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="model">Model</label>
-                        <input type="text" name="model" required class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="bouwjaar">Bouwjaar</label>
-                        <input type="number" name="bouwjaar" required class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="prijs">Prijs</label>
-                        <input type="text" name="prijs" required class="form-control">
-                    </div>
-
-                    <!-- Basisgegevens -->
-                    <h3>Basisgegevens</h3>
-                    <div class="form-group">
-                        <label for="carrosserietype">Carrosserietype</label>
-                        <input type="text" name="carrosserietype" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="categorie">Categorie</label>
-                        <input type="text" name="categorie" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="aandrijving">Aandrijving</label>
-                        <input type="text" name="aandrijving" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="stoelen">Stoelen</label>
-                        <input type="number" name="stoelen" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="deuren">Deuren</label>
-                        <input type="number" name="deuren" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="advertentienr">Advertentienr</label>
-                        <input type="text" name="advertentienr" class="form-control">
-                    </div>
-
-                    <!-- Voertuiggeschiedenis -->
-                    <h3>Voertuiggeschiedenis</h3>
-                    <div class="form-group">
-                        <label for="kilometerstand">Kilometerstand</label>
-                        <input type="text" name="kilometerstand" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="apk">APK</label>
-                        <input type="text" name="apk" class="form-control">
-                    </div>
-
-                    <!-- Technische gegevens -->
-                    <h3>Technische Gegevens</h3>
-                    <div class="form-group">
-                        <label for="vermogen_kw">Vermogen kW (PK)</label>
-                        <input type="text" name="vermogen_kw" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="transmissie">Transmissie</label>
-                        <input type="text" name="transmissie" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="cilinderinhoud">Cilinderinhoud</label>
-                        <input type="text" name="cilinderinhoud" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="versnellingen">Versnellingen</label>
-                        <input type="text" name="versnellingen" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="cilinders">Cilinders</label>
-                        <input type="text" name="cilinders" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="leeggewicht">Leeggewicht</label>
-                        <input type="text" name="leeggewicht" class="form-control">
-                    </div>
-
-                    <!-- Invoervelden voor hoofdfoto en extra afbeeldingen -->
-                    <div class="form-group">
-                        <label for="hoofdfoto_url">Hoofdafbeelding URL</label>
-                        <input type="text" name="hoofdfoto_url" placeholder="Voer de URL van de hoofdfoto in" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="afbeelding_urls[]">Extra Afbeelding URL's</label>
-                        <input type="text" name="afbeelding_urls[]" placeholder="Voer de URL van de extra afbeelding in" class="form-control">
-                        <input type="text" name="afbeelding_urls[]" placeholder="Voer de URL van de extra afbeelding in" class="form-control">
-                        <input type="text" name="afbeelding_urls[]" placeholder="Voer de URL van de extra afbeelding in" class="form-control">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Auto Toevoegen</button>
-                </form>
-            `;
-        });
-
         // Auto Overzicht weergeven
         document.getElementById('overzicht-link').addEventListener('click', function() {
             document.getElementById('main-content').innerHTML = `
                 <h2>Auto Overzicht</h2>
-                <table>
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -242,7 +128,7 @@ $autos_result = mysqli_query($conn, $autos_query);
                             <th>Model</th>
                             <th>Bouwjaar</th>
                             <th>Prijs</th>
-                            <th>Afbeelding</th> <!-- Voor het weergeven van de hoofdfoto -->
+                            <th>Afbeelding</th>
                             <th>Aangemaakt op</th>
                             <th>Acties</th>
                         </tr>
@@ -258,8 +144,8 @@ $autos_result = mysqli_query($conn, $autos_query);
                             <td><img src="<?php echo $auto['afbeelding_url']; ?>" alt="<?php echo $auto['model']; ?>" style="width:100px;"></td>
                             <td><?php echo $auto['created_at']; ?></td>
                             <td>
-                                <a href="edit_car.php?id=<?php echo $auto['id']; ?>" class="btn-edit">Bewerken</a>
-                                <a href="delete_car.php?id=<?php echo $auto['id']; ?>" class="btn-delete" onclick="return confirm('Weet je zeker dat je deze auto wilt verwijderen?');">Verwijderen</a>
+                                <a href="edit_car.php?id=<?php echo $auto['id']; ?>" class="btn btn-outline-primary btn-sm">Bewerken</a>
+                                <a href="delete_car.php?id=<?php echo $auto['id']; ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Weet je zeker dat je deze auto wilt verwijderen?');">Verwijderen</a>
                             </td>
                         </tr>
                         <?php } ?>
@@ -267,7 +153,189 @@ $autos_result = mysqli_query($conn, $autos_query);
                 </table>
             `;
         });
+
+        // Berichten weergeven
+        document.getElementById('berichten-link').addEventListener('click', function() {
+            document.getElementById('main-content').innerHTML = `
+                <h2>Klanten Berichten</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Naam</th>
+                            <th>Email</th>
+                            <th>Bericht</th>
+                            <th>Verzonden op</th>
+                            <th>Gelezen</th>
+                            <th>Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($bericht = mysqli_fetch_assoc($berichten_result)) { ?>
+                        <tr>
+                            <td><?php echo $bericht['id']; ?></td>
+                            <td><?php echo $bericht['naam']; ?></td>
+                            <td><?php echo $bericht['email']; ?></td>
+                            <td><?php echo $bericht['bericht']; ?></td>
+                            <td><?php echo $bericht['datum']; ?></td>
+                            <td><?php echo $bericht['gelezen'] == 1 ? 'Ja' : 'Nee'; ?></td>
+                            <td>
+                                <a href="markeer_gelezen.php?id=<?php echo $bericht['id']; ?>" class="btn btn-outline-primary btn-sm">Markeer als gelezen</a>
+                                <a href="delete_bericht.php?id=<?php echo $bericht['id']; ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Weet je zeker dat je dit bericht wilt verwijderen?');">Verwijderen</a>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            `;
+        });
+
+        // Formulier voor e-mail sturen weergeven
+        document.getElementById('email-link').addEventListener('click', function() {
+            document.getElementById('main-content').innerHTML = `
+                <h2>Mail Sturen</h2>
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <label for="to" class="form-label">Naar (E-mail)</label>
+                        <input type="email" name="to" class="form-control" placeholder="Voer het e-mailadres in" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Onderwerp</label>
+                        <input type="text" name="subject" class="form-control" placeholder="Voer het onderwerp in" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Bericht</label>
+                        <textarea name="message" class="form-control" rows="4" placeholder="Voer het bericht in" required></textarea>
+                    </div>
+                    <button type="submit" name="send_email" class="btn btn-primary">Verstuur E-mail</button>
+                </form>
+            `;
+        });
+
+        // Auto's toevoegen weergeven
+        document.getElementById('autos-link').addEventListener('click', function() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="card p-4">
+                    <h2>Auto Toevoegen</h2>
+                    <form method="POST" action="">
+                        <div class="mb-3">
+                            <label for="merk" class="form-label">Merk</label>
+                            <input type="text" name="merk" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="model" class="form-label">Model</label>
+                            <input type="text" name="model" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bouwjaar" class="form-label">Bouwjaar</label>
+                            <input type="number" name="bouwjaar" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prijs" class="form-label">Prijs</label>
+                            <input type="number" name="prijs" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="beschrijving" class="form-label">Beschrijving</label>
+                            <textarea name="beschrijving" class="form-control" rows="4"></textarea>
+                        </div>
+
+                        <!-- Extra velden voor auto details -->
+                        <h3>Auto Details</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="carrosserietype" class="form-label">Carrosserietype</label>
+                                <input type="text" name="carrosserietype" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="categorie" class="form-label">Categorie</label>
+                                <input type="text" name="categorie" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="aandrijving" class="form-label">Aandrijving</label>
+                                <input type="text" name="aandrijving" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="stoelen" class="form-label">Stoelen</label>
+                                <input type="number" name="stoelen" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="deuren" class="form-label">Deuren</label>
+                                <input type="number" name="deuren" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="advertentienr" class="form-label">Advertentienr</label>
+                                <input type="text" name="advertentienr" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="kilometerstand" class="form-label">Kilometerstand</label>
+                                <input type="text" name="kilometerstand" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="apk" class="form-label">APK</label>
+                                <input type="text" name="apk" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="vermogen_kw" class="form-label">Vermogen kW (PK)</label>
+                                <input type="text" name="vermogen_kw" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="transmissie" class="form-label">Transmissie</label>
+                                <input type="text" name="transmissie" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cilinderinhoud" class="form-label">Cilinderinhoud</label>
+                                <input type="text" name="cilinderinhoud" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="versnellingen" class="form-label">Versnellingen</label>
+                                <input type="text" name="versnellingen" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cilinders" class="form-label">Cilinders</label>
+                                <input type="text" name="cilinders" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="leeggewicht" class="form-label">Leeggewicht</label>
+                                <input type="text" name="leeggewicht" class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- Hoofd- en extra afbeelding velden -->
+                        <div class="mb-3">
+                            <label for="hoofdfoto_url" class="form-label">Hoofdafbeelding URL</label>
+                            <input type="text" name="hoofdfoto_url" class="form-control" placeholder="Voer de URL van de hoofdfoto in" required>
+                        </div>
+                        
+                        <!-- Container voor dynamisch toegevoegde afbeelding URL's -->
+                        <div id="extra-images-container">
+                            <div class="mb-3">
+                                <label for="afbeelding_urls[]" class="form-label">Extra Afbeelding URL's</label>
+                                <input type="text" name="afbeelding_urls[]" class="form-control" placeholder="Voer de URL van de extra afbeelding in">
+                            </div>
+                        </div>
+
+                        <!-- Knop om nieuwe URL-velden toe te voegen -->
+                        <button type="button" class="btn btn-secondary mb-3" id="add-image-field">Voeg extra afbeelding toe</button>
+
+                        <button type="submit" name="auto_toevoegen" class="btn btn-primary w-100">Auto Toevoegen</button>
+                    </form>
+                </div>
+            `;
+
+            // Event listener voor dynamisch toevoegen van velden
+            document.getElementById('add-image-field').addEventListener('click', function() {
+                const container = document.getElementById('extra-images-container');
+                const newInput = document.createElement('div');
+                newInput.classList.add('mb-3');
+                newInput.innerHTML = `
+                    <input type="text" name="afbeelding_urls[]" class="form-control mt-2" placeholder="Voer de URL van de extra afbeelding in">
+                `;
+                container.appendChild(newInput);
+            });
+        });
     </script>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

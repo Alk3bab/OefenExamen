@@ -109,19 +109,10 @@ if ($conn->connect_error) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Zoeken</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="verkopen.php">Verkopen</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auto-info.php">Auto informatie</a>
+                        <a class="nav-link" href="contact.php">Contact</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="login.php">Inloggen</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.php">Contact</a>
                     </li>
                 </ul>
             </div>

@@ -22,7 +22,8 @@ $user = mysqli_fetch_assoc($result);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klant Dashboard - PremiumWagens</title>
-    <link rel="stylesheet" href="css/klant.css"> 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script>
         // Functie om klantgegevens te tonen en de welkomsttekst te verbergen
         function showGegevens() {
@@ -41,21 +42,25 @@ $user = mysqli_fetch_assoc($result);
 </head>
 <body>
 
-    <div class="admin-container">
-        <!-- Zijbalk met menu -->
-        <nav class="sidebar">
-            <h2>Klant Dashboard</h2>
-            <ul>
-                <li><a href="#" onclick="showGegevens()">Mijn Gegevens</a></li>
-                <li><a href="#" onclick="showAutoToevoegen()">Auto Toevoegen</a></li>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="bg-dark text-light p-3" style="width: 250px; min-height: 100vh;">
+            <h2 class="text-center">Klant Dashboard</h2>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-3">
+                    <a href="#" onclick="showGegevens()" class="nav-link text-light bg-secondary rounded">Mijn Gegevens</a>
+                </li>
+                <li class="nav-item mb-3">
+                    <a href="#" onclick="showAutoToevoegen()" class="nav-link text-light bg-secondary rounded">Auto Toevoegen</a>
+                </li>
             </ul>
-            <div class="sidebar-footer">
-                <a href="logout.php" class="btn-back">Uitloggen</a>
+            <div class="mt-auto">
+                <a href="logout.php" class="btn btn-primary w-100">Uitloggen</a>
             </div>
         </nav>
 
-        <!-- Hoofdinhoud -->
-        <div class="main-content">
+        <!-- Main content -->
+        <div class="p-4 w-100 bg-light">
             <!-- Welkomsttekst, standaard zichtbaar -->
             <div id="welkom">
                 <h2>Welkom, <?php echo $user['naam']; ?></h2>
@@ -65,7 +70,7 @@ $user = mysqli_fetch_assoc($result);
             <!-- Klantgegevens, standaard verborgen -->
             <div id="klant-gegevens" style="display: none;">
                 <h2>Mijn Gegevens</h2>
-                <table>
+                <table class="table table-striped">
                     <tr>
                         <th>Naam:</th>
                         <td><?php echo $user['naam']; ?></td>
@@ -74,7 +79,6 @@ $user = mysqli_fetch_assoc($result);
                         <th>Email:</th>
                         <td><?php echo $user['email']; ?></td>
                     </tr>
-    
                     <tr>
                         <th>Aangemaakt op:</th>
                         <td><?php echo $user['created_at']; ?></td>
@@ -86,44 +90,65 @@ $user = mysqli_fetch_assoc($result);
             <div id="auto-toevoegen" style="display: none;">
                 <h2>Auto Toevoegen</h2>
                 <form action="process_upload.php" method="POST">
-                    <label for="merk">Merk:</label>
-                    <input type="text" name="merk" id="merk" required>
+                    <div class="mb-3">
+                        <label for="merk" class="form-label">Merk:</label>
+                        <input type="text" name="merk" id="merk" class="form-control" required>
+                    </div>
 
-                    <label for="model">Model:</label>
-                    <input type="text" name="model" id="model" required>
+                    <div class="mb-3">
+                        <label for="model" class="form-label">Model:</label>
+                        <input type="text" name="model" id="model" class="form-control" required>
+                    </div>
 
-                    <label for="bouwjaar">Bouwjaar:</label>
-                    <input type="number" name="bouwjaar" id="bouwjaar" required>
+                    <div class="mb-3">
+                        <label for="bouwjaar" class="form-label">Bouwjaar:</label>
+                        <input type="number" name="bouwjaar" id="bouwjaar" class="form-control" required>
+                    </div>
 
-                    <label for="prijs">Prijs:</label>
-                    <input type="number" name="prijs" id="prijs" required>
+                    <div class="mb-3">
+                        <label for="prijs" class="form-label">Prijs:</label>
+                        <input type="number" name="prijs" id="prijs" class="form-control" required>
+                    </div>
 
                     <h3>Basisgegevens</h3>
 
-                    <label for="carrosserietype">Carrosserietype:</label>
-                    <input type="text" name="carrosserietype" id="carrosserietype" required>
+                    <div class="mb-3">
+                        <label for="carrosserietype" class="form-label">Carrosserietype:</label>
+                        <input type="text" name="carrosserietype" id="carrosserietype" class="form-control" required>
+                    </div>
 
-                    <label for="categorie">Categorie:</label>
-                    <input type="text" name="categorie" id="categorie" required>
+                    <div class="mb-3">
+                        <label for="categorie" class="form-label">Categorie:</label>
+                        <input type="text" name="categorie" id="categorie" class="form-control" required>
+                    </div>
 
-                    <label for="aandrijving">Aandrijving:</label>
-                    <input type="text" name="aandrijving" id="aandrijving" required>
+                    <div class="mb-3">
+                        <label for="aandrijving" class="form-label">Aandrijving:</label>
+                        <input type="text" name="aandrijving" id="aandrijving" class="form-control" required>
+                    </div>
 
-                    <label for="stoelen">Stoelen:</label>
-                    <input type="number" name="stoelen" id="stoelen" required>
+                    <div class="mb-3">
+                        <label for="stoelen" class="form-label">Stoelen:</label>
+                        <input type="number" name="stoelen" id="stoelen" class="form-control" required>
+                    </div>
 
-                    <label for="deuren">Deuren:</label>
-                    <input type="number" name="deuren" id="deuren" required>
+                    <div class="mb-3">
+                        <label for="deuren" class="form-label">Deuren:</label>
+                        <input type="number" name="deuren" id="deuren" class="form-control" required>
+                    </div>
 
-                    <label for="afbeelding_url">Afbeelding URL:</label>
-                    <input type="text" name="afbeelding_url" id="afbeelding_url" required>
+                    <div class="mb-3">
+                        <label for="afbeelding_url" class="form-label">Afbeelding URL:</label>
+                        <input type="text" name="afbeelding_url" id="afbeelding_url" class="form-control" required>
+                    </div>
 
-                    <button type="submit">Auto Toevoegen</button>
+                    <button type="submit" class="btn btn-primary">Auto Toevoegen</button>
                 </form>
             </div>
-
         </div>
     </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

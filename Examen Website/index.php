@@ -24,71 +24,131 @@ if ($conn->connect_error) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* Geanimeerde navigatiebalk */
-        .navbar {
-            transition: all 0.5s ease;
+        /* Hero Sectie Stijlen */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-top: 0;
+            padding: 0;
+            overflow: hidden;
         }
 
-        .navbar.scrolled {
-            background-color: rgba(0, 0, 0, 0.9) !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        .hero video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
         }
 
-        .navbar-nav .nav-link {
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #f8c146 !important;
-        }
-
-        /* "Zoek naar jouw auto" sectie styling */
-        .search-filters-section {
-            background-image: linear-gradient(to bottom right, #007bff, #6610f2);
-            padding: 60px 0;
-            border-radius: 10px;
-        }
-
-        .search-filters-section h2 {
+        .hero-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: white;
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 30px;
-            animation: fadeInDown 1s ease;
-        }
-
-        .form-select {
-            background-color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 5px;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .form-select:focus {
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+            text-align: center;
+            z-index: 1;
         }
 
         .btn-primary {
             padding: 12px 20px;
             font-size: 1.2rem;
             border-radius: 50px;
-            background-color: #f8c146;
+            background-color: #ffc107;
             border: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .btn-primary:hover {
-            background-color: #ffdd57;
+            background-color: #e0a800;
             transform: translateY(-5px);
         }
 
+        /* Statistieken sectie */
+        .stats-section {
+            background-color: #343a40;
+            padding: 60px 0;
+            color: white;
+        }
+
+        .stats-section .counter {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        /* Zoeken naar jouw perfecte auto sectie */
+        .search-section {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .search-section h2 {
+            margin-bottom: 30px;
+        }
+
+        .form-select, .form-control {
+            margin-bottom: 20px;
+        }
+
+        /* Top Occasions sectie */
+        .top-occasions {
+            background-color: #f8f9fa;
+        }
+        .occasion-card {
+            transition: transform 0.5s ease;
+        }
+        .occasion-card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Klantbeoordelingen sectie */
+        .reviews-section {
+            background-color: #e9ecef;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .review-box {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .review-text {
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 40px 0;
+        }
+
+        .footer a {
+            color: #f8c146;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #ffdd57;
+        }
+
         /* Animaties */
-        @keyframes fadeInDown {
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(-50px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -119,96 +179,72 @@ if ($conn->connect_error) {
         </div>
     </nav>
 
-    <!-- Hero Sectie met Video en Dynamische Tekst -->
-    <div class="hero" style="margin-top: 80px;">
-        <video autoplay muted loop class="w-100" style="object-fit: cover; height: 70vh;">
+    <!-- Hero Sectie -->
+    <div class="hero">
+        <video autoplay muted loop>
             <source src="video/hero-video.mp4" type="video/mp4">
             <!-- Fallback afbeelding -->
             <img src="img/hero-fallback.jpg" alt="Fallback Afbeelding">
         </video>
-        <div class="hero-text text-center text-white" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;">
+        <div class="hero-text">
             <h1>Welkom bij PremiumWagens</h1>
-            <p><span id="usp-text">Betrouwbare auto's</span></p>
+            <p>Uitgebreid assortiment</p>
             <a href="occasions.php" class="btn btn-primary btn-lg">Bekijk Onze Occasions</a>
         </div>
     </div>
 
-    <!-- Waarom Kiezen Voor Ons Sectie -->
-    <section class="why-choose-us-section bg-light py-5">
+    <!-- Prestaties sectie -->
+    <section class="stats-section">
         <div class="container text-center">
-            <h2 data-aos="fade-up">Waarom Kiezen Voor PremiumWagens?</h2>
-            <p data-aos="fade-up" data-aos-delay="100">Wij bieden u de beste tweedehands auto-ervaring met betrouwbare service en gegarandeerde kwaliteit.</p>
+            <h2 data-aos="fade-up">Onze Prestaties</h2>
             <div class="row mt-4">
-                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="why-choose-box">
-                        <i class="fas fa-car fa-3x mb-3"></i>
-                        <h4>Ruime Selectie</h4>
-                        <p>Wij hebben een breed aanbod van zorgvuldig geselecteerde tweedehands auto's.</p>
-                    </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+                    <h3><span class="counter" data-target="444">0</span>+</h3>
+                    <p>Auto's verkocht</p>
                 </div>
-                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="why-choose-box">
-                        <i class="fas fa-shield-alt fa-3x mb-3"></i>
-                        <h4>Gegarandeerde Kwaliteit</h4>
-                        <p>Elke auto wordt grondig geïnspecteerd om aan onze kwaliteitsnormen te voldoen.</p>
-                    </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+                    <h3><span class="counter" data-target="120">0</span>+</h3>
+                    <p>Tevreden klanten</p>
                 </div>
-                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="400">
-                    <div class="why-choose-box">
-                        <i class="fas fa-tools fa-3x mb-3"></i>
-                        <h4>Uitstekende Ondersteuning</h4>
-                        <p>Onze deskundige medewerkers staan altijd voor u klaar, van aankoop tot onderhoud.</p>
-                    </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+                    <h3><span class="counter" data-target="30">0</span>+</h3>
+                    <p>Jaar ervaring</p>
+                </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="400">
+                    <h3><span class="counter" data-target="148">0</span>+</h3>
+                    <p>Occasions beschikbaar</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Uitgebreide Filter voor Occasions -->
-    <section class="search-filters-section py-5">
+    <!-- Zoeken naar jouw perfecte auto sectie -->
+    <section class="search-section">
         <div class="container">
-            <h2 class="text-center" data-aos="fade-up">Zoek naar jouw ideale auto</h2>
-            <form action="occasions.php" method="get" class="row mt-4 justify-content-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="col-md-3 mb-3">
-                    <select name="merk" class="form-select">
+            <h2>Vind jouw perfecte auto</h2>
+            <form action="occasions.php" method="get" class="row justify-content-center">
+                <div class="col-md-4">
+                    <select class="form-select" name="merk">
                         <option value="">Merk</option>
                         <option value="audi">Audi</option>
                         <option value="bmw">BMW</option>
                         <option value="mercedes">Mercedes</option>
                     </select>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <select name="prijs" class="form-select">
-                        <option value="">Prijs</option>
-                        <option value="10000">Tot €10.000</option>
-                        <option value="20000">Tot €20.000</option>
-                        <option value="30000">Tot €30.000</option>
-                    </select>
+                <div class="col-md-4">
+                    <input type="number" class="form-control" name="bouwjaar" placeholder="Bouwjaar" min="1980">
                 </div>
-                <div class="col-md-3 mb-3">
-                    <select name="jaar" class="form-select">
-                        <option value="">Bouwjaar</option>
-                        <option value="2015">Vanaf 2015</option>
-                        <option value="2018">Vanaf 2018</option>
-                        <option value="2020">Vanaf 2020</option>
-                    </select>
+                <div class="col-md-4">
+                    <input type="number" class="form-control" name="kilometerstand" placeholder="Max kilometerstand" min="0">
                 </div>
-                <div class="col-md-3 mb-3">
-                    <select name="kilometerstand" class="form-select">
-                        <option value="">Kilometerstand</option>
-                        <option value="50000">Tot 50.000 km</option>
-                        <option value="100000">Tot 100.000 km</option>
-                        <option value="150000">Tot 150.000 km</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-12 mt-3">
                     <button type="submit" class="btn btn-primary w-100">Zoek Auto's</button>
                 </div>
             </form>
         </div>
     </section>
 
-    <!-- Top Occasions Sectie met dynamische auto's uit database -->
+    <!-- Top Occasions -->
     <section class="top-occasions py-5">
         <div class="container text-center">
             <h2 class="mb-4" data-aos="fade-down">Top Occasions</h2>
@@ -238,7 +274,34 @@ if ($conn->connect_error) {
         </div>
     </section>
 
-    <!-- Uitgebreide Footer -->
+    <!-- Klantbeoordelingen sectie -->
+    <section class="reviews-section">
+        <div class="container">
+            <h2>Wat onze klanten zeggen</h2>
+            <div class="row">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="review-box">
+                        <p class="review-text">"Geweldige ervaring! De service was uitstekend en ik ben zeer tevreden met mijn nieuwe auto."</p>
+                        <p><strong>- John Doe</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="review-box">
+                        <p class="review-text">"PremiumWagens biedt de beste kwaliteit en een eerlijke prijs. Absoluut een aanrader!"</p>
+                        <p><strong>- Jane Smith</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="review-box">
+                        <p class="review-text">"Fantastische service van begin tot eind. Ik kom hier zeker weer voor mijn volgende auto."</p>
+                        <p><strong>- Max Verstappen</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer py-4 bg-dark text-white">
         <div class="container">
             <div class="row">
@@ -300,6 +363,23 @@ if ($conn->connect_error) {
                 navbar.classList.remove('scrolled');
             }
         };
+
+        // Counter animatie voor de stats sectie
+        document.querySelectorAll('.counter').forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const increment = target / 200;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(updateCount, 30);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            updateCount();
+        });
     </script>
 </body>
 </html>
@@ -308,4 +388,3 @@ if ($conn->connect_error) {
 // Sluit de databaseverbinding
 $conn->close();
 ?>
-

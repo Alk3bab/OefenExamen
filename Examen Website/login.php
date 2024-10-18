@@ -25,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $error = "Verkeerd e-mailadres of wachtwoord";
     }
-    
 }
 ?>
 
@@ -35,38 +34,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - PremiumWagens</title>
-    <link rel="stylesheet" href="css/login.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
     <!-- Login Container -->
-    <div class="login-wrapper">
-        <div class="login-banner">
-            <h1>Welkom</h1>
-            <p>Log in om verder te gaan</p>
-        </div>
-        <div class="login-form-container">
-            <h2>Inloggen</h2>
-            <form method="POST" action="login.php">
-                <div class="form-group">
-                    <label for="email">E-mailadres</label>
-                    <input type="email" name="email" required class="form-control" placeholder="Voer je e-mailadres in">
-                </div>
-                <div class="form-group">
-                    <label for="password">Wachtwoord</label>
-                    <input type="password" name="password" required class="form-control" placeholder="Voer je wachtwoord in">
-                </div>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
+            <div class="card-body">
+                <h2 class="text-center mb-4">Inloggen</h2>
+                <form method="POST" action="login.php">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-mailadres</label>
+                        <input type="email" name="email" required class="form-control" placeholder="Voer je e-mailadres in">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Wachtwoord</label>
+                        <input type="password" name="password" required class="form-control" placeholder="Voer je wachtwoord in">
+                    </div>
 
-                <button type="submit" class="btn btn-primary">Inloggen</button>
-                <p>Nog geen account? <a href="register.php">Maak er een aan</a></p>
-                <p>Terug naa<a href="index.php">Homepagina</a></p>
+                    <button type="submit" class="btn btn-primary w-100">Inloggen</button>
 
+                    <div class="text-center mt-3">
+                        <p>Nog geen account? <a href="register.php">Maak er een aan</a></p>
+                        <p><a href="index.php">Terug naar Homepagina</a></p>
+                    </div>
 
-
-                <?php if (isset($error)) { echo "<p class='error'>$error</p>"; } ?>
-            </form>
+                    <?php if (isset($error)) { echo "<p class='text-danger text-center'>$error</p>"; } ?>
+                </form>
+            </div>
         </div>
     </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

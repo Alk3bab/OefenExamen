@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Navigatiebalk -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">PremiumWagens</a>
+            <a class="navbar-brand" href="index.php">PremiumWagens</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -159,9 +159,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="contact.php">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="verkoop.php">Verkopen</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="login.php">Inloggen</a>

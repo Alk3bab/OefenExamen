@@ -56,18 +56,26 @@ if ($conn->connect_error) {
             z-index: 1;
         }
 
-        .btn-primary {
+        .btn-custom {
             padding: 12px 20px;
             font-size: 1.2rem;
             border-radius: 50px;
             background-color: #ffc107;
             border: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            margin: 0 10px;
         }
 
-        .btn-primary:hover {
+        .btn-custom:hover {
             background-color: #e0a800;
             transform: translateY(-5px);
+        }
+
+        /* Flexbox voor knoppen */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
 
         /* Statistieken sectie */
@@ -189,7 +197,10 @@ if ($conn->connect_error) {
         <div class="hero-text">
             <h1>Welkom bij PremiumWagens</h1>
             <p>Uitgebreid assortiment</p>
-            <a href="occasions.php" class="btn btn-primary btn-lg">Bekijk Onze Occasions</a>
+            <div class="btn-container">
+                <a href="occasions.php" class="btn btn-custom">Bekijk Onze Occasions</a>
+                <a href="verkoop.php" class="btn btn-custom">Verkoop Uw Auto</a>
+            </div>
         </div>
     </div>
 

@@ -1,11 +1,11 @@
 <?php
 session_start();
-include 'config.php'; // Verbind met de database
+include 'config.php'; // Verbind met de juiste database
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $naam = $_POST['naam'];
     $email = $_POST['email'];
-    $password = md5($_POST['password']); // Wachtwoord versleutelen
+    $password = md5($_POST['password']); // Versleutelen van het wachtwoord
 
     // Controleer of het e-mailadres al bestaat
     $check_query = "SELECT * FROM users WHERE email='$email'";
@@ -34,40 +34,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Aanmaken - PremiumWagens</title>
-    <link rel="stylesheet" href="css/register.css">
+    <title>Registreren - PremiumWagens</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-    <div class="register-container">
-        <div class="register-image">
-            <div class="image-text">
-                <h2>Welkom</h2>
-                <p>Maak hier gratis een account aan</p>
+    <!-- Register Container -->
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
+            <div class="card-body">
+                <h2 class="text-center mb-4">Account Aanmaken</h2>
+                <form method="POST" action="register.php">
+                    <div class="mb-3">
+                        <label for="naam" class="form-label">Naam</label>
+                        <input type="text" name="naam" required class="form-control" placeholder="Voer je naam in">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-mailadres</label>
+                        <input type="email" name="email" required class="form-control" placeholder="Voer je e-mailadres in">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Wachtwoord</label>
+                        <input type="password" name="password" required class="form-control" placeholder="Voer je wachtwoord in">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Account Aanmaken</button>
+
+                    <div class="text-center mt-3">
+                        <p>Heb je al een account? <a href="login.php">Log hier in</a></p>
+                        <p><a href="index.php">Terug naar Homepagina</a></p>
+                    </div>
+
+                    <?php if (isset($error)) { echo "<p class='text-danger text-center'>$error</p>"; } ?>
+                </form>
             </div>
-            <img src="img/login.jpg" alt="Registratie afbeelding">
-        </div>
-        <div class="register-box">
-            <form method="POST" action="register.php">
-                <div class="form-group">
-                    <label for="naam">Naam</label>
-                    <input type="text" name="naam" required class="form-control" placeholder="Voer je naam in">
-                </div>
-                <div class="form-group">
-                    <label for="email">E-mailadres</label>
-                    <input type="email" name="email" required class="form-control" placeholder="Voer je e-mailadres in">
-                </div>
-                <div class="form-group">
-                    <label for="password">Wachtwoord</label>
-                    <input type="password" name="password" required class="form-control" placeholder="Voer je wachtwoord in">
-                </div>
-                <button type="submit" class="btn btn-primary">Account Aanmaken</button>
-                
-                <?php if (isset($error)) { echo "<p class='error'>$error</p>"; } ?>
-            </form>
-            <p>Heb je al een account? <a href="login.php">Log hier in</a></p>
         </div>
     </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

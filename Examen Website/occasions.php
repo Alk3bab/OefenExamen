@@ -268,9 +268,7 @@ $result = mysqli_query($conn, $query);
             <a href="index.php">PremiumWagens</a>
         </div>
         <ul class="nav-links">
-            <li><a href="index.php">Zoeken</a></li>
-            <li><a href="verkoop.php">Verkopen</a></li>
-            <li><a href="auto_informatie.php">Auto informatie</a></li>
+            <li><a href="contact.php">Contact</a></li>
             <li><a href="login.php">Inloggen</a></li>
         </ul>
     </div>

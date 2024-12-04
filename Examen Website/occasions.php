@@ -389,7 +389,6 @@ $result = mysqli_query($conn, $query);
                         <!-- Auto informatie -->
                         <h3><?php echo htmlspecialchars($occasion['merk']) . " " . htmlspecialchars($occasion['model']); ?></h3>
                         <p>Prijs: €<?php echo number_format($occasion['prijs'], 2, ',', '.'); ?></p>
-                        <p>Specificaties: <?php echo htmlspecialchars($occasion['specificaties']); ?></p>
                         
                         <div class="occasion-buttons">
                             <!-- Meer informatie knop -->

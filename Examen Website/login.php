@@ -4,8 +4,8 @@ include 'config.php'; // Zorg ervoor dat je verbinding maakt met de juiste datab
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
-    $password = md5($_POST['password']); // Je kunt dit vervangen door password_hash() voor extra veiligheid
-
+    $password = md5($_POST['password']);
+    
     // Query om de gebruiker op te halen op basis van het ingevoerde e-mailadres en wachtwoord
     $query = "SELECT * FROM users WHERE email='$email' AND wachtwoord='$password'";
     $result = mysqli_query($conn, $query);

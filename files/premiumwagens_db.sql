@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Gegenereerd op: 04 okt 2024 om 13:05
--- Serverversie: 10.4.28-MariaDB
--- PHP-versie: 8.2.4
+-- Generation Time: Dec 04, 2024 at 11:17 AM
+-- Server version: 8.2.0
+-- PHP Version: 8.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,76 +24,153 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `cars`
+-- Table structure for table `auto_verkoop`
 --
 
-CREATE TABLE `cars` (
-  `id` int(11) NOT NULL,
-  `merk` varchar(100) NOT NULL,
-  `model` varchar(100) NOT NULL,
-  `bouwjaar` int(4) NOT NULL,
+CREATE TABLE `auto_verkoop` (
+  `id` int NOT NULL,
+  `merk` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `model` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `bouwjaar` int NOT NULL,
+  `kilometerstand` int NOT NULL,
   `prijs` decimal(10,2) NOT NULL,
-  `afbeelding` varchar(255) DEFAULT NULL,
-  `beschrijving` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `image` varchar(255) DEFAULT NULL
+  `afbeelding_url` text COLLATE utf8mb4_general_ci NOT NULL,
+  `klant_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Gegevens worden geëxporteerd voor tabel `cars`
---
-
-INSERT INTO `cars` (`id`, `merk`, `model`, `bouwjaar`, `prijs`, `afbeelding`, `beschrijving`, `created_at`, `image`) VALUES
-(8, 'Bmw', '340i', 2022, 68000.00, 'uploads/6Q1Qu2xmthcFJx0JLN3hQo-465f49d3ce16e55355dab7c2d1793eb1-bmw-340i-xdrive-front-1100.jpg', 'Zeer nette bmw 340i  \r\n\r\nPK:340\r\nKM:68000\r\nEigenaren:3', '2024-10-03 10:40:33', NULL),
-(10, 'BMW', '340i', 2022, 68000.00, '6Q1Qu2xmthcFJx0JLN3hQo.jpg', 'Zeer nette BMW 340i, PK:340, KM:68000, Eigenaar: 1', '2024-10-03 11:21:30', NULL),
-(11, 'Renault', 'Talisman', 2019, 35000.00, 'renault-talisman-2019-specs-01.jpg', 'Zeer nette Renault Talisman, PK:230, KM:44000, Eigenaar: 1', '2024-10-03 11:21:30', NULL),
-(12, 'Audi', 'A4', 2021, 45000.00, 'uploads/6Q1Qu2xmthcFJx0JLN3hQo-465f49d3ce16e55355dab7c2d1793eb1-bmw-340i-xdrive-front-1100.jpg', 'Sportieve Audi A4, PK:300, KM:52000, Eigenaar: 1', '2024-10-03 11:21:30', NULL),
-(13, 'Mercedes', 'C-Class', 2020, 55000.00, 'mercedes-c-class.jpg', 'Luxueuze Mercedes C-Class, PK:320, KM:37000, Eigenaar: 1', '2024-10-03 11:21:30', NULL),
-(14, 'Volkswagen', 'Golf', 2018, 30000.00, 'vw-golf.jpg', 'Volkswagen Golf, PK:230, KM:89000, Eigenaar: 1', '2024-10-03 11:21:30', NULL),
-(19, 'Ford', 'Mustang', 2020, 60000.00, 'ford-mustang.jpg', 'Ford Mustang, PK:450, KM:35000, Eigenaar: 1', '2024-10-03 11:21:30', NULL),
-(20, 'Jaguar', 'F-Type', 2022, 90000.00, 'jaguar-f-type.jpg', 'Jaguar F-Type, PK:575, KM:18000, Eigenaar: 1', '2024-10-03 11:21:30', NULL),
-(23, 'Maserati', 'Ghibli', 2021, 75000.00, 'maserati-ghibli.jpg', 'Maserati Ghibli, PK:430, KM:24000, Eigenaar: 1', '2024-10-03 11:21:30', NULL),
-(29, 'Lexus', 'LC500', 2021, 95000.00, 'lexus-lc500.jpg', 'Lexus LC500, PK:471, KM:22000, Eigenaar: 1', '2024-10-03 11:21:30', NULL),
-(30, 'BMW', '340i', 2022, 68000.00, 'bmw-340i.jpg', 'Zeer nette BMW 340i met veel opties.', '2024-10-03 10:40:33', NULL),
-(31, 'BMW', 'X5', 2021, 75000.00, 'bmw-x5.jpg', 'BMW X5 met sportpakket en full option.', '2024-10-03 10:50:12', NULL),
-(32, 'BMW', 'M3', 2020, 85000.00, 'bmw-m3.jpg', 'BMW M3, high-performance sports car.', '2024-10-03 11:10:54', NULL),
-(33, 'BMW', '520d', 2019, 45000.00, 'bmw-520d.jpg', 'BMW 520d met dieselmotor, zuinig en krachtig.', '2024-10-03 11:30:21', NULL),
-(34, 'BMW', 'X3', 2018, 40000.00, 'bmw-x3.jpg', 'Compacte SUV met veel comfort en rijplezier.', '2024-10-03 11:40:44', NULL),
-(35, 'Renault', 'Talisman', 2019, 35000.00, 'uploads/6Q1Qu2xmthcFJx0JLN3hQo-465f49d3ce16e55355dab7c2d1793eb1-bmw-340i-xdrive-front-1100.jpg', 'Zeer nette Renault Talisman, voorzien van PK:230 en KM:44000.', '2024-10-03 11:05:49', NULL),
-(36, 'Renault', 'Clio', 2021, 22000.00, 'renault-clio.jpg', 'Populaire compacte Renault Clio, ideaal voor in de stad.', '2024-10-03 12:10:25', NULL),
-(37, 'Renault', 'Megane', 2020, 27000.00, 'renault-megane.jpg', 'Renault Megane met modern design en rijcomfort.', '2024-10-03 12:20:45', NULL),
-(38, 'Renault', 'Captur', 2022, 29000.00, 'renault-captur.jpg', 'Compacte SUV Renault Captur, perfect voor gezinnen.', '2024-10-03 12:30:33', NULL),
-(39, 'Renault', 'Koleos', 2020, 45000.00, 'renault-koleos.jpg', 'Luxe SUV met veel ruimte en geavanceerde technologie.', '2024-10-03 12:40:12', NULL),
-(40, 'Volkswagen', 'Golf', 2022, 32000.00, 'vw-golf.jpg', 'Volkswagen Golf, sportieve compacte wagen.', '2024-10-03 13:00:12', NULL),
-(41, 'Volkswagen', 'Polo', 2021, 25000.00, 'vw-polo.jpg', 'Compacte en zuinige Volkswagen Polo.', '2024-10-03 13:10:35', NULL),
-(42, 'Volkswagen', 'Tiguan', 2020, 42000.00, 'vw-tiguan.jpg', 'Volkswagen Tiguan SUV, comfortabel en ruim.', '2024-10-03 13:20:25', NULL),
-(43, 'Volkswagen', 'Passat', 2019, 38000.00, 'vw-passat.jpg', 'Volkswagen Passat, luxe gezinswagen.', '2024-10-03 13:30:19', NULL),
-(44, 'Volkswagen', 'Arteon', 2021, 46000.00, 'vw-arteon.jpg', 'Stijlvolle Volkswagen Arteon met moderne snufjes.', '2024-10-03 13:40:40', NULL),
-(45, 'Audi', 'A3', 2022, 37000.00, 'audi-a3.jpg', 'Compacte Audi A3, ideaal voor stedelijk gebruik.', '2024-10-03 14:00:00', NULL),
-(46, 'Audi', 'A6', 2021, 62000.00, 'audi-a6.jpg', 'Luxe Audi A6, met krachtige prestaties.', '2024-10-03 14:10:15', NULL),
-(47, 'Audi', 'Q5', 2020, 55000.00, 'audi-q5.jpg', 'Audi Q5 SUV, perfect voor lange reizen.', '2024-10-03 14:20:25', NULL),
-(48, 'Audi', 'A8', 2019, 95000.00, 'audi-a8.jpg', 'Audi A8 met high-end luxe en technologie.', '2024-10-03 14:30:45', NULL),
-(49, 'Audi', 'RS6', 2022, 120000.00, 'uploads/6Q1Qu2xmthcFJx0JLN3hQo-465f49d3ce16e55355dab7c2d1793eb1-bmw-340i-xdrive-front-1100.jpg', 'Audi RS6, high-performance sportwagen.', '2024-10-03 14:40:12', NULL),
-(50, 'test', 'test', 3232, 32424.00, 'uploads/6Q1Qu2xmthcFJx0JLN3hQo-465f49d3ce16e55355dab7c2d1793eb1-bmw-340i-xdrive-front-1100.jpg', '32423', '2024-10-03 15:39:52', NULL),
-(51, 'tt', 'tt', 432, 344432.00, 'uploads/gallery_images_2_0_16412256341530504947.jpg', 'tt', '2024-10-03 16:24:12', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `users`
+-- Table structure for table `berichten`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `naam` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `wachtwoord` varchar(255) NOT NULL,
-  `rol` enum('admin','klant') NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+CREATE TABLE `berichten` (
+  `id` int NOT NULL,
+  `naam` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `bericht` text COLLATE utf8mb4_general_ci NOT NULL,
+  `datum` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `gelezen` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Gegevens worden geëxporteerd voor tabel `users`
+-- Dumping data for table `berichten`
+--
+
+INSERT INTO `berichten` (`id`, `naam`, `email`, `bericht`, `datum`, `gelezen`) VALUES
+(1, 'test', 'test@gmail.com', 'test', '2024-10-16 09:31:40', 0),
+(2, 'test', 'test@gmail.com', 'test', '2024-10-16 09:36:45', 0),
+(3, 'aaa', 'aaa@gmail.com', 'aaa', '2024-10-16 09:37:00', 0),
+(4, 'aaa', 'aaa@gmail.com', 'aaa', '2024-10-16 09:51:45', 0),
+(5, 'aaa', 'aaa@gmail.com', 'aaa', '2024-10-16 09:55:13', 0),
+(6, 'test ', 'test@gmail.com', 'test', '2024-10-16 09:55:39', 0),
+(7, 'test ', 'test@gmail.com', 'test', '2024-10-16 10:01:58', 0),
+(14, 'ali', 'ali@gmail.com', 'hallo??', '2024-10-16 10:40:52', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cars`
+--
+
+CREATE TABLE `cars` (
+  `id` int NOT NULL,
+  `merk` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `model` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `bouwjaar` int NOT NULL,
+  `prijs` decimal(10,2) NOT NULL,
+  `afbeelding_url` varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `beschrijving` text COLLATE utf8mb4_general_ci,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `locatie` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `kilometerstand` int DEFAULT NULL,
+  `transmissie` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `brandstof` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `vermogen` int DEFAULT NULL,
+  `verkoper` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `telefoonnummer` varchar(15) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `carrosserietype` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `categorie` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `aandrijving` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `stoelen` int DEFAULT NULL,
+  `deuren` int DEFAULT NULL,
+  `advertentienr` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `apk` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cilinderinhoud` decimal(5,1) DEFAULT NULL,
+  `versnellingen` int DEFAULT NULL,
+  `cilinders` int DEFAULT NULL,
+  `leeggewicht` int DEFAULT NULL,
+  `vermogen_kw` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `gereserveerd` tinyint(1) DEFAULT '0',
+  `is_approved` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cars`
+--
+
+INSERT INTO `cars` (`id`, `merk`, `model`, `bouwjaar`, `prijs`, `afbeelding_url`, `beschrijving`, `created_at`, `locatie`, `kilometerstand`, `transmissie`, `brandstof`, `vermogen`, `verkoper`, `telefoonnummer`, `carrosserietype`, `categorie`, `aandrijving`, `stoelen`, `deuren`, `advertentienr`, `apk`, `cilinderinhoud`, `versnellingen`, `cilinders`, `leeggewicht`, `vermogen_kw`, `gereserveerd`, `is_approved`) VALUES
+(59, 'BMW', '340i', 2019, 45500.00, 'https://prod.pictures.autoscout24.net/listing-images/13265bfa-0087-4d8f-88ae-cf4c1b47ea73_f9e1acab-d8f2-4e6c-a2a8-cb1858ceb8c4.jpg/720x540.webp', 'Basisgegevens\r\nCarrosserietype\r\nSedan\r\nCategorie\r\nGebruikt\r\nAandrijving\r\n4x4\r\nStoelen\r\n5\r\nDeuren\r\n4\r\nAdvertentienr.\r\nGBS-26-R\r\nVoertuiggeschiedenis\r\nKilometerstand\r\n150.500 km\r\nBouwjaar\r\n10/2019\r\nAPK\r\n02/2025\r\nVolledige onderhoudshistorie\r\nJa\r\nTechnische Gegevens\r\nVermogen kW (PK)\r\n275 kW (374 PK)\r\nTransmissie\r\nAutomatisch\r\nCilinderinhoud\r\n2.998 cm³\r\nCilinders\r\n6\r\nLeeggewicht\r\n1.645 kg', '2024-10-08 09:22:01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1),
+(61, 'Audi', 'A6', 2020, 40950.00, 'https://prod.pictures.autoscout24.net/listing-images/f585f2fb-d456-4a2c-a330-6dd343c580e7_4a5b87ce-9b3e-4080-a45a-e202ccee84ad.jpg/1920x1080.webp', 'test', '2024-10-08 13:22:46', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(63, 'Renault', 'Megane RS', 2023, 60450.00, 'https://prod.pictures.autoscout24.net/listing-images/7544d9f1-460a-47d6-9d0e-9e32387f5460_353fed96-c2b5-4664-a8d7-d04c00dd0a33.jpg/720x540.webp', '', '2024-10-08 22:57:03', NULL, 30, 'Automaat', NULL, NULL, NULL, NULL, 'Htachback', 'Nieuw', 'Voorwiel', 5, 5, '1001', '05-09-2025', 1800.0, 7, 4, 1200, '350', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `car_images`
+--
+
+CREATE TABLE `car_images` (
+  `id` int NOT NULL,
+  `car_id` int DEFAULT NULL,
+  `image_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `car_images`
+--
+
+INSERT INTO `car_images` (`id`, `car_id`, `image_url`) VALUES
+(7, 61, 'https://prod.pictures.autoscout24.net/listing-images/f585f2fb-d456-4a2c-a330-6dd343c580e7_c833d902-e152-4612-882b-47da3306de11.jpg/1920x1080.webp'),
+(8, 61, 'https://prod.pictures.autoscout24.net/listing-images/f585f2fb-d456-4a2c-a330-6dd343c580e7_f570380d-45e7-4b06-b0d1-06329d7f8bb7.jpg/1920x1080.webp'),
+(9, 61, 'https://prod.pictures.autoscout24.net/listing-images/f585f2fb-d456-4a2c-a330-6dd343c580e7_1909f5e6-7e10-40f6-9c6c-8b72d44d87f7.jpg/1920x1080.webp'),
+(13, 63, 'https://prod.pictures.autoscout24.net/listing-images/7544d9f1-460a-47d6-9d0e-9e32387f5460_1ac8374f-3f13-459c-b37d-00c4511cb949.jpg/720x540.webp'),
+(14, 63, 'https://prod.pictures.autoscout24.net/listing-images/7544d9f1-460a-47d6-9d0e-9e32387f5460_90dd84ef-fdd4-4cc6-9d35-f3f9d82cb1c1.jpg/720x540.webp'),
+(15, 63, 'https://prod.pictures.autoscout24.net/listing-images/7544d9f1-460a-47d6-9d0e-9e32387f5460_0fc2a4de-f5a5-4210-ae10-6a92fe499edc.jpg/720x540.webp');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reserveringen`
+--
+
+CREATE TABLE `reserveringen` (
+  `id` int NOT NULL,
+  `auto_id` int NOT NULL,
+  `naam` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefoon` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `opmerkingen` text COLLATE utf8mb4_general_ci,
+  `datum` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `naam` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `wachtwoord` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `rol` enum('admin','klant') COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `rol`, `created_at`) VALUES
@@ -104,37 +181,110 @@ INSERT INTO `users` (`id`, `naam`, `email`, `wachtwoord`, `rol`, `created_at`) V
 (5, 'jan', 'jan@gmail.com', 'fa27ef3ef6570e32a79e74deca7c1bc3', 'klant', '2024-10-03 10:38:04');
 
 --
--- Indexen voor geëxporteerde tabellen
+-- Indexes for dumped tables
 --
 
 --
--- Indexen voor tabel `cars`
+-- Indexes for table `auto_verkoop`
+--
+ALTER TABLE `auto_verkoop`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `klant_id` (`klant_id`);
+
+--
+-- Indexes for table `berichten`
+--
+ALTER TABLE `berichten`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cars`
 --
 ALTER TABLE `cars`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexen voor tabel `users`
+-- Indexes for table `car_images`
+--
+ALTER TABLE `car_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `car_id` (`car_id`);
+
+--
+-- Indexes for table `reserveringen`
+--
+ALTER TABLE `reserveringen`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `auto_id` (`auto_id`);
+
+--
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT voor geëxporteerde tabellen
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT voor een tabel `cars`
+-- AUTO_INCREMENT for table `auto_verkoop`
+--
+ALTER TABLE `auto_verkoop`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `berichten`
+--
+ALTER TABLE `berichten`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `cars`
 --
 ALTER TABLE `cars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
--- AUTO_INCREMENT voor een tabel `users`
+-- AUTO_INCREMENT for table `car_images`
+--
+ALTER TABLE `car_images`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `reserveringen`
+--
+ALTER TABLE `reserveringen`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `auto_verkoop`
+--
+ALTER TABLE `auto_verkoop`
+  ADD CONSTRAINT `auto_verkoop_ibfk_1` FOREIGN KEY (`klant_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `car_images`
+--
+ALTER TABLE `car_images`
+  ADD CONSTRAINT `car_images_ibfk_1` FOREIGN KEY (`car_id`) REFERENCES `cars` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `reserveringen`
+--
+ALTER TABLE `reserveringen`
+  ADD CONSTRAINT `reserveringen_ibfk_1` FOREIGN KEY (`auto_id`) REFERENCES `cars` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
